@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('ajax')->group( function () {
     Route::get('city-index',[CityController::class,'index'])->name('city.index');
     Route::get('getDestinations/{id}',[CityController::class,'getDestinations'])->name('city.getDestinations');
+    Route::get('getDestinationsAjax/{name}',[CityController::class,'getDestinationsAjax']);
 });

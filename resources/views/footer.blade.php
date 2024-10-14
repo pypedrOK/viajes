@@ -56,5 +56,56 @@
         })
     });
 </script>
+@if ($errors->any())
+    <script>
+        Swal.fire({
+            position:'center-center',
+            title: '{{ $errors->first() }}',
+            icon: 'error',
+            ShowConfirmButton:true,
+            timer:4500 
+        })
+    </script>
+
+@endif
+
+@if (session('mensaje'))
+    <script>
+        Swal.fire({
+            position:'center-center',
+            title: "{{ session('mensaje') }}",
+            icon: 'success',
+            ShowConfirmButton:true,
+            timer:2500 
+        })
+    </script>
+
+@endif
+
+<script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
+<script>
+    //inicialización de micromodal
+    document.addEventListener('DOMContentLoaded', function(){
+        MicroModal.init();
+    });
+
+    function showDetails(id_trip, fecha, hora, disponibles, ocupados, mascotas, fumar, salida, llegada, detalle, foto) {
+        $('#modal_id_trip').val(id_trip);
+        $('#txt_date').text(fecha);
+        $('#txt_details').text(detalle);
+        $('#txt_time').text(hora);
+        $('#txt_available').text(disponibles);
+        $('#modal_seats').attr('max',disponibles);
+        $('#txt_occupied').text(ocupados);
+        $('#txt_pets').text(mascotas);
+        $('#txt_smooking').text(fumar);
+        $('#txt_pickup').text(salida);
+        $('#txt_dropoff').text(llegada);
+        $('#img_driver').attr('src',foto);
+
+        
+    }
+    
+</script>
 </body>
 </html>
