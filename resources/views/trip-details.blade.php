@@ -77,7 +77,7 @@
                     <td>
                       <div class="field">
                           <div class="control has-icons-left">
-                              <input required class="input" type="number" id="modal_phone" value="{{ Auth::user()->phone }}">
+                              <input required class="input" type="number" id="modal_phone" value="{{ optional(Auth::user())->phone }}">
                               <span class="icon is-small is-left">
                                   <i class="fas fa-phone"></i>
                               </span>
@@ -90,7 +90,7 @@
                     <td colspan=2>
                       <div class="field">
                           <div class="control has-icons-left">
-                              <textarea rows="3" required class="input" type="number" id="modal_comment" placeholder="Escribe algo que el conductor deba saber"></textarea>
+                              <textarea rows="3" required class="input" id="modal_comment" placeholder="Escribe algo que el conductor deba saber"></textarea>
                           </div>
                       </div>
                     </td>
@@ -107,7 +107,12 @@
           </p>
         </main>
         <footer class="modal__footer">
-          <button class="modal__btn modal__btn-primary">Enviar solicitud</button>
+            @auth
+            <button onclick="sendReservation()" class="modal__btn modal__btn-primary">Enviar solicitud</button>
+            @else
+            <a href="{{ route('login') }}" class="modal__btn modal__btn-primary">Ingresar</a>
+            @endauth
+          
           <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Nope</button>
         </footer>
       </div>

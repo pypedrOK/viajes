@@ -1,56 +1,160 @@
 @include('header')
 <div class="container content">
     <h1 class="my-2 columns is-mobile is-centered">Publicar un nuevo viaje</h1>
+<hr/>
     <section class="my-2 columns is-mobile is-centered">
-        <a href="{{route('login-google')}}">Continuar con Google</a>
-    </section>
-    <hr/>
-    <h1 class="my-2 columns is-mobile is-centered">Usar otra cuenta</h1>
-
-    <section class="my-2 columns is-mobile is-centered">
-        <form method="POST" action="{{ route('new-account-email') }}">
+        <form method="POST" action="">
             @csrf
             <div class="field">
                 <div class="control has-icons-left">
-                    <input required class="input" type="text" name="name" {{old('name')}} placeholder="Tu nombre completo">
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-user"></i>
-                    </span>
+                <select required style="width:200px" name="origen" id="origen">
+
+                </select>
                 </div>
             </div>
             <div class="field">
                 <div class="control has-icons-left">
-                    <input required class="input" type="email" name="email" {{old('email')}} placeholder="Tu correo electrónico">
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-envelope"></i>
-                    </span>
+                    <select required style="width:200px" name="destino" id="destino">
+
+                    </select>
                 </div>
             </div>
             <div class="field">
                 <div class="control has-icons-left">
-                    <input required class="input" type="number" name="phone" {{old('phone')}} placeholder="Tu número telefónico">
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-phone"></i>
-                    </span>
+                <input required class="input is-success" type="text" name="recogida" id="recogida" placeholder="Inicio" value="">
+                <span class="icon is-small is-left">
+                        <i class="fas fa-location"></i>
+                </span>
+                </div>
+            </div>
+           
+            <div class="field">
+                <div class="control has-icons-left">
+                <input required class="input is-success" type="text" name="llegada" id="llegada" placeholder="Termino" value="">
+                <span class="icon is-small is-left">
+                        <i class="fas fa-location"></i>
+                </span>
                 </div>
             </div>
             <div class="field">
-                <div class="control has-icons-left">
-                    <input required class="input" type="password" name="password" placeholder="Escribe una contraseña">
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-lock"></i>
-                    </span>
+                <div class="control has-icons-left">             
+                <input title="Cuantos asientos libres ofreces?" required class="input is-success" type="number" name="asientos" id="asientos" min="1" max="4" value="3">
+                <span class="icon is-small is-left">
+                        <i class="fas fa-chair"></i>
+                </span>
                 </div>
             </div>
             <div class="field">
+                <div class="control">
+                    Fecha salida: 
+                <input required class="input is-success" type="date" name="fecha" id="fecha" min="{{date('Y-m-d')}}" value="{{date('Y-m-d')}}">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    Hora salida: 
+                <input required class="input is-success" type="time" name="hora" id="hora">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    Deseas dejar un asiento libre? 
+                    <select class="select" required style="width:200px" name="libre" id="libre">
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+
+                    </select>
+                
+                </div>
+                <div class="field">
+                <div class="control">
+                Se permite viajar con mascota?  
+                    <select class="select" required style="width:200px" name="mascota" id="mascota">
+                        <option value="1">Si</option>
+                        <option selected value="0">No</option>
+
+                    </select>
+                
+                </div>
+                <div class="field">
+                <div class="control">
+                    Se permite fumar? 
+                    <select class="select" required style="width:200px" name="fumar" id="fumar">
+                        <option value="1">Si</option>
+                        <option selected value="0">No</option>
+
+                    </select>
+                
+                </div>
+                <div class="field">
+                <div class="control">
+                Activar reserva automatica?
+                    <select class="select" required style="width:200px" name="automatica" id="automatica">
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+
+                    </select>
+                
+                </div>
+                </div>
+                </hr>
+                <div class="field">
+                    <div class="control has-icons-left">                       
+                    <input required class="input is-success" type="number" min="100" name="precio" id="precio" placeholder="Precio por asiento Ej: 3500" value="">
+                    <span class="icon is-small is-left">
+                            <i class="fas fa-dollar"></i>
+                    </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control has-icons-left">                       
+                    <input required class="input is-success" type="text" name="celular" id="celular" placeholder="Celular" value="">
+                    <span class="icon is-small is-left">
+                            <i class="fas fa-phone"></i>
+                    </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control has-icons-left">                       
+                    <input required class="input is-success" type="text" name="patente" id="patente" placeholder="Patente" value="">
+                    <span class="icon is-small is-left">
+                            <i class="fas fa-car"></i>
+                    </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control has-icons-left">                       
+                    <input required class="input is-success" type="text" name="marca" id="marca" placeholder="Marca" value="">
+                    <span class="icon is-small is-left">
+                            <i class="fas fa-car"></i>
+                    </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control has-icons-left">                       
+                    <input required class="input is-success" type="text" name="color" id="color" placeholder="Color" value="">
+                    <span class="icon is-small is-left">
+                            <i class="fas fa-car"></i>
+                    </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        Duración:                        
+                    <input required class="input is-success" type="time" name="duracion" id="duracion" placeholder="Duración estimada" value="">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">                    
+                    <textarea class="input is-success" name="detalles" id="detalles" placeholder="Algo que deban saber los pasajeros?" value="" rows="4"></textarea>
+                    </div>
+                </div>
+            <div class="field">
                 <div class="control has-icons-left">
-                    <button class="button is-success is-fullwidth">Continuar</button>
+                    <button type="button" onclick="saveTrip()" class="button is-success is-fullwidth">Publicar viaje</button>
                 </div>
             </div>
         </form>
-    </section>
-    <section class="my-2 columns is-mobile is-centered">
-        Ya tengo cuenta <a href="{{route('login')}}">| Iniciar sesión</a>
     </section>
     <hr>
 </div>

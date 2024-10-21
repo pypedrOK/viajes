@@ -74,5 +74,38 @@ class TripController extends Controller
 
          }
 
-    }  
+    }
+    
+    public function store(Request $request){
+        $trip = new Trip;
+        $trip->departure_city_id = $request->input('departure_city_id');
+        $trip->arrival_city_id = $request->input('arrival_city_id');
+        $trip->available_seats = $request->input('available_seats');
+        $trip->behind_available_seats = $request->input('behind_available_seats');
+        $trip->car_plate = $request->input('car_plate');
+        $trip->trip_duration = $request->input('trip_duration');
+        $trip->driver_id = $request->input('driver_id');
+        $trip->departure_date = $request->input('departure_date');
+        $trip->departure_time = $request->input('departure_time');
+        $trip->pickup_point = $request->input('pickup_point');
+        $trip->dropoff_point = $request->input('dropoff_point');
+        //str para que se guarde el valor sin puntos como un entero
+        $trip->price_per_seat = str_replace(".", "", $request->input('price_per_seat'));
+        $trip->smoking_allowed = $request->input('smoking_allowed');
+        $trip->pets_allowed = $request->input('pets_allowed');
+        $trip->car_brand = $request->input('car_brand');
+        $trip->phone = $request->input('phone');
+        $trip->automatic_reservation = $request->input('automatic_reservation');
+        $trip->details = $request->input('details');
+        $trip->car_color = $request->input('car_color');
+
+        $trip->save();
+
+        return response()->json([
+            'message' => "Viaje creado con éxito",
+            'icon' =>'success'
+
+        ],201);
+
+    }
 }

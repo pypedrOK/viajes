@@ -98,13 +98,135 @@
         $('#modal_seats').attr('max',disponibles);
         $('#txt_occupied').text(ocupados);
         $('#txt_pets').text(mascotas);
-        $('#txt_smooking').text(fumar);
+        $('#txt_smoking').text(fumar);
         $('#txt_pickup').text(salida);
         $('#txt_dropoff').text(llegada);
-        $('#img_driver').attr('src',foto);
-
-        
+        $('#img_driver').attr('src',foto);        
     }
+
+//Ingresar reservación con el botón, CAMBIAR VAL POR LET!!
+    function sendReservation() {
+
+        let token = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url:`{{ route('save-reservation') }}`,
+            type:'POST',
+            dataType:'json',
+            data:{
+                '_token':token,
+                'trip_id':$('#modal_id_trip').val(),
+                'phone':$('#modal_phone').val(),
+                'comment':$('#modal_comment').val(),
+                'seats':$('#modal_seats').val(),
+                'passenger_id':'{{ optional(Auth::user())->id }}',
+            },
+            success:function(res){
+                console.log(res);
+                if(res.error === true){
+                    Swal.fire({
+                      position:'center-center',
+                      title: res.message,
+                      icon: 'error',
+                      ShowConfirmButton: true,
+                      timer:3500 
+                    });
+                }else{
+                    Swal.fire({
+                        position:'center-center',
+                        title: res.message,
+                        icon: 'success',
+                        ShowConfirmButton: true,
+                        timer:3500 
+                    }).then((result)=>{
+                        if(result.isConfirmed || result.dismiss == Swal.DismissReason.timer){
+                            location.reload();
+                        }
+                    });
+                }
+            },
+            error:function(err){
+                Swal.fire({
+                        position:'center-center',
+                        title: "Ups! x.x",
+                        icon: 'error',
+                        ShowConfirmButton:true,
+                        timer:3500 
+                    });
+                    console.log(err);
+            } 
+        })
+    }
+
+
+    function saveTrip() {
+
+        let token = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url:`{{ route('save-trip') }}`,
+            type:'POST',
+            dataType:'json',
+            data:{
+                '_token':token,
+                'departure_city_id':$('#origen').val(),
+                'arrival_city_id':$('#destino').val(),
+                'available_seats':$('#asientos').val(),
+                'behind_available_seats':$('#libre').val(),
+                'car_plate':$('#patente').val(),
+                'car_color':$('#color').val(),
+                'car_brand':$('#marca').val(),
+                'driver_id':'{{ optional(Auth::user())->id }}',
+                'departure_date':$('#fecha').val(),
+                'departure_time':$('#hora').val(),
+                'pickup_point':$('#recogida').val(),
+                'dropoff_point':$('#llegada').val(),
+                'price_per_seat':$('#precio').val(),
+                'smoking_allowed':$('#fumar').val(),
+                'pets_allowed':$('#mascota').val(),
+                'phone':$('#celular').val(),
+                'details':$('#detalles').val(),
+                'automatic_reservation':$('#automatica').val(),
+                'trip_duration':$('#duracion').val(),
+            },
+            success:function(res){
+                console.log(res);
+                if(res.error){
+                    Swal.fire({
+                    position:'center-center',
+                    title: res.message,
+                    icon: 'error',
+                    ShowConfirmButton: true,
+                    timer:3500 
+                    });
+                }else{
+                    Swal.fire({
+                        position:'center-center',
+                        title: res.message,
+                        icon: 'success',
+                        ShowConfirmButton: true,
+                        timer:3500 
+                    }).then((result)=>{
+                        if(result.isConfirmed || result.dismiss == Swal.DismissReason.timer){
+                            location.href = `/search/${$('#origen').val()}/${$('#destino').val()}/${$('#fecha').val()}/2/departure_time/-1`
+                        }
+                    });
+                }
+            },
+            error:function(err){
+                Swal.fire({
+                        position:'center-center',
+                        title: "Ups! x.x",
+                        icon: 'error',
+                        ShowConfirmButton:true,
+                        timer:3500 
+                    });
+                    console.log(err);
+            } 
+        })
+    }
+
+
     
 </script>
 </body>

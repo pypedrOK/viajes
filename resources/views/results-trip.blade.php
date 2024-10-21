@@ -87,7 +87,7 @@
         @else
         <div class="content">
             @foreach ($trips as $info )
-            <div class="card my-2">
+            <div class="card my-5" @if ($info->available_seats == $info->occupied_seats) style="background-color: #fff4d6" @endif>
                 <div class="card-content">
                     <div class="media">
                     <div class="media-left">
@@ -186,7 +186,13 @@
                     </div>
                     <footer class="card-footer">
 <!--aqui se muestra en detalles horas de viajes y duracion-->
-                        <button onclick="showDetails('{{ $info->id }}','{{ $info->departure_date }}','{{ substr($info->departure_time,0,5) }} -> {{substr($horaLlegada->format('H:i:s').PHP_EOL,0,5)}} ( {{intval(substr($info->trip_duration,0,2)).'h '.intval(substr($info->trip_duration,3,2)).'m'}})','{{ $info->available_seats - $info->occupied_seats }}','{{ $info->occupied_seats?$info->occupied_seats: 0 }}','{{ $info->pets_allowed?'SI':'NO' }}','{{ $info->smoking_allowed?'SI':'NO'}}','{{ $info->pickup_point }}','{{ $info->dropoff_point }}','{{ $info->details }}','{{ optional($info->driver)->photo ? $info->driver->photo : asset('img/auto.png')}}')" data-micromodal-trigger="modal-details" style="border-radius: 50px;" class="button is-success is-fullwidth">Detalles</button>
+                        @if (($info->available_seats - $info->occupied_seats) > 0)
+                        <button onclick="showDetails('{{ $info->id }}','{{ $info->departure_date }}','{{ substr($info->departure_time,0,5) }} → {{substr($horaLlegada->format('H:i:s').PHP_EOL,0,5)}}  ({{ intval(substr($info->trip_duration,0,2)).'h '.intval(substr($info->trip_duration,3,2)).'m'}})','{{ $info->available_seats - $info->occupied_seats }}','{{ $info->occupied_seats?$info->occupied_seats: 0 }}','{{ $info->pets_allowed?'SI':'NO' }}','{{ $info->smoking_allowed?'SI':'NO'}}','{{ $info->pickup_point }}','{{ $info->dropoff_point }}','{{ $info->details }}','{{ optional($info->driver)->photo ? $info->driver->photo : asset('img/auto.png')}}')" data-micromodal-trigger="modal-details" style="border-radius: 50px;" class="button is-success is-fullwidth is-medium">Detalles y reserva</button>
+                        @else
+                        <button disabled style="border-radius: 50px;" class="button is-light is-fullwidth is-medium">Cupos agotados</button>
+
+                        @endif
+
                     
                     </footer>
                 </div>
