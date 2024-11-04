@@ -15,11 +15,17 @@
                     <i class="fa-solid fa-plus"></i>
                     </span>Publica un viaje
                 </a>
-                <a href="{{ route('history') }}" class="navbar-item">
+                <a href="{{ route('home') }}" class="navbar-item">
                     <span class="icon">
                         <i class="fa-solid fa-user"></i>
                     </span>
                     {{ Auth::user()->name }}
+                </a>
+                <a href="{{ route('history') }}" class="navbar-item">
+                    <span class="icon">
+                        <i class="fa-solid fa-car"></i>
+                    </span>
+                    Mis viajes
                 </a>
                 <a style="color: red;" href="{{ route('logout') }}" class="navbar-item">
                     <span class="icon">
