@@ -47,4 +47,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //passenger_id fk entre user y reservation
+
+    public function reservations(){
+        return $this->hasMany(Reservation::class,'passenger_id');
+    }
 }

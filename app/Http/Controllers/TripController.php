@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\Reservation;
 use App\Models\Trip;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -107,5 +109,60 @@ class TripController extends Controller
 
         ],201);
 
+    }
+    //funcion historial
+    public function history(){
+        $sessionUserId = Auth()->user()->id;
+        //obtener los viajes donde ha conducido el usuario
+        $trips = Trip::with(['departureCity','arrivalCity','driver'])
+            ->orWhere('driver_id', $sessionUserId)
+            ->orderBy('id','desc')
+            //aparecen ultimos 10 viajes
+            ->limit(10)
+            ->get();
+
+        $trips->map(function($trip){
+            //viajes como conductor
+            $trip->is_driver = true;
+            return $trip;
+
+        });
+        $reservations = User::find($sessionUserId)->reservations;  
+        
+        $tripIds = $reservations->pluck('trip_id')->unique()->toArray();
+
+        //viajes de pasajero
+        $trips2 = Trip::with(['departureCity','arrivalCity','driver'])
+            ->whereIn('id', $tripIds)
+            ->orderBy('id','desc')
+            //aparecen ultimos 10 viajes
+            ->limit(10)
+            ->get();
+        
+        $trips2->map(function($trip){
+            //viajes como conductor
+            $trip->is_driver = false;
+            return $trip;
+        });
+        //union de id de conductor y pasajero
+        $allTripIds = $trips->pluck('id')->concat($trips2->pluck('id'))->toArray();
+
+        $reservationsForTrips = Reservation::whereIn('trip_id',$allTripIds)->get();
+
+        $passengerCountPerTrip = $reservationsForTrips->groupBy('trip_id')->map->count();
+
+        $trips->each(function($trip) use($passengerCountPerTrip){
+
+            $trip->passenger_count = $passengerCountPerTrip->get($trip->id,0); 
+
+        });
+
+        //union de listas ordenadas
+
+        $trips = $trips->concat($trips2)->sortByDesc('departure_date');
+
+        $date = date('Y-m-d');
+
+        return view('history', compact('trips','date'));
     }
 }
